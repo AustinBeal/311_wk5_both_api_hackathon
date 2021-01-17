@@ -23,10 +23,21 @@ const getUsersById = (req,res) => {
     })
 }
 
+
+
 const getUserByFirstname = (req,res) => {
-    let firstName = req.params.firstname
-    res.send(`employee's firstname is ${firstName}`)
+    let firstnames = req.params.firstname
+    let sql = `SELECT * FROM employees WHERE first_name =  '${firstnames}'` 
+    sql = mysql.format(sql)
+    pool.query(sql, (err, rows) => {
+    if (err){ 
+        return res.status(500).send('An unexpected error occurred')
+    }
+    return res.json(rows)
+  });
 }
+
+
 
 module.exports = {
     getUsers, getUsersById, getUserByFirstname
